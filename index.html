@@ -3,6 +3,37 @@
   <head>
     <meta charset="utf-8">
     <title>SkiFree</title>
+    <style>
+      html {
+        background: #f9f9f9;
+      }
+
+      body {
+        color: #515151;
+        font-family: "PT Sans", Helvetica, Arial, sans-serif;
+      }
+
+      h1 {
+        text-align: center;
+        font-weight: bold;
+        font-size: 36px;
+      }
+
+      #canvas {
+        display: block;
+        margin: auto;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        padding: 6px;
+        background: white;
+      }
+
+      p {
+        text-align: center;
+        font-weight: normal;;
+        font-size: 16px;
+      }
+    </style>
   </head>
   <body>
     <div style="display:none;">
@@ -11,7 +42,9 @@
      <img id="skier"
       src="images/skier.png">
     </div>
+    <h1>SkiFree</h1>
     <canvas width="500" height="500" id="canvas"></canvas>
+    <p>Use the mouse to control your skier</p>
     <script type="text/javascript" src="bundle.js" charset="utf-8"></script>
   </body>
 </html>
