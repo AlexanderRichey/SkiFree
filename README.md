@@ -2,7 +2,7 @@
 
 A remake of the classic game SkiFree made with JavaScript Canvas.
 
-![Screenshot]('./images/screenshot.png')
+![Screenshot](./images/screenshot.png)
 
 ## Features
 
