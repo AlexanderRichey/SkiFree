@@ -244,6 +244,7 @@
 	  var score = "Score: " + this.score;
 	  var crash = "Crashes: " + this.crashCount;
 
+	  ctx.fillStyle = "#000000";
 	  ctx.font = "18px 'PT Sans'";
 	  ctx.fillText(score, 10, 20);
 	  ctx.fillText(crash, 120, 20);
@@ -253,6 +254,7 @@
 
 	Game.prototype.gameOverMessage = function (ctx) {
 	  if (this.isSkierCaught) {
+	    ctx.fillStyle = "#000000";
 	    ctx.font = "40px 'PT Sans'";
 	    var gameOverMessage = "You are Yeti food";
 	    var gameOverTextWidth = ctx.measureText(gameOverMessage).width;
@@ -262,6 +264,7 @@
 	      100
 	    );
 
+	    ctx.fillStyle = "#000000";
 	    ctx.font = "18px 'PT Sans'";
 	    var playAgainMessage = "Click to play again";
 	    var playAgainTextWidth = ctx.measureText(playAgainMessage).width;
@@ -299,6 +302,8 @@
 
 	Game.prototype.draw = function (ctx) {
 	  ctx.clearRect(0, 0, 500, 500);
+	  ctx.fillStyle = "#FFFFFF";
+	  ctx.fillRect(0, 0, 500, 500);
 
 	  this.trees.forEach(function (tree) {
 	    tree.draw(ctx);
