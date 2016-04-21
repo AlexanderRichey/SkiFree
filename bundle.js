@@ -375,9 +375,9 @@
 	};
 
 	Skier.prototype.move = function (newPos) {
-	  if (newPos[0] > this.pos[0]) {
+	  if (newPos[0] >= (this.pos[0] + 10)) {
 	    this.pushLeft();
-	  } else if (newPos[0] < this.pos[0]) {
+	  } else if (newPos[0] <= (this.pos[0] - 10)) {
 	    this.pushRight();
 	  }
 
