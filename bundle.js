@@ -359,11 +359,19 @@
 	};
 
 	Skier.prototype.pushLeft = function () {
-	  this.vel += 0.2;
+	  if (this.vel < 0) {
+	    this.vel += 1.5;
+	  } else {
+	    this.vel += 0.5;
+	  }
 	};
 
 	Skier.prototype.pushRight = function () {
-	  this.vel -= 0.2;
+	  if (this.vel > 0) {
+	    this.vel -= 1.5;
+	  } else {
+	    this.vel -= 0.5;
+	  }
 	};
 
 	Skier.prototype.move = function (newPos) {
@@ -383,13 +391,13 @@
 
 	  switch (this.state) {
 	    case "OK":
-	      if (this.vel > 0.5) {
+	      if (this.vel > 2.5) {
 	        ctx.drawImage(
 	          this.spriteMap,
 	          49, 0, 17, 34,
 	          this.pos[0], this.pos[1], 17, 34
 	        );
-	      } else if (this.vel < -0.5) {
+	      } else if (this.vel < -2.5) {
 	        ctx.drawImage(
 	          this.spriteMap,
 	          49, 37, 17, 34,
@@ -424,7 +432,7 @@
 
 	var Tree = function (pos, spriteMap) {
 	  this.spriteMap = spriteMap;
-	  this.type = Math.floor(Math.random() * 5);
+	  this.type = Math.floor(Math.random() * 4);
 	  this.pos = pos;
 	  this.vel = [0, -10];
 	  this.radius = 40;
@@ -434,28 +442,28 @@
 
 	Tree.prototype.draw = function (ctx) {
 	  switch (this.type) {
-	    case 1:
+	    case 0:
 	      ctx.drawImage(
 	        this.spriteMap,
 	        0, 28, 30, 34,
 	        this.pos[0], this.pos[1], 30, 34
 	      );
 	      break;
-	    case 2:
+	    case 1:
 	      ctx.drawImage(
 	        this.spriteMap,
 	        95, 66, 32, 64,
 	        this.pos[0], this.pos[1], 32, 64
 	      );
 	      break;
-	    case 3:
+	    case 2:
 	      ctx.drawImage(
 	        this.spriteMap,
 	        30, 52, 23, 11,
 	        this.pos[0], this.pos[1], 23, 11
 	      );
 	      break;
-	    case 4:
+	    case 3:
 	      ctx.drawImage(
 	        this.spriteMap,
 	        85, 138, 15, 32,
