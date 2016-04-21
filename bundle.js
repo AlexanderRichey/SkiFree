@@ -88,7 +88,7 @@
 
 	    return pos;
 	  },
-	  newTreePos: function () {
+	  newObstaclePos: function () {
 	    var pos = [];
 	    pos.push(Math.floor(Math.random() * 500));
 	    pos.push(500);
@@ -105,35 +105,22 @@
 
 	var Util = __webpack_require__(1),
 	    Skier = __webpack_require__(3),
-	    Tree = __webpack_require__(4),
+	    Obstacle = __webpack_require__(4),
 	    Yeti = __webpack_require__(5);
 
 	var Game = function (skierSpriteMap, obstacleSpriteMap) {
 	  this.skierSpriteMap = skierSpriteMap;
 	  this.obstacleSpriteMap = obstacleSpriteMap;
-
-	  NUM_TREES = 5;
-	  this.trees = [];
-
-	  this.skier = new Skier(this.skierSpriteMap);
-	  this.yeti = new Yeti(this.skierSpriteMap);
-	  this.addTrees();
-
-	  this.paused = false;
-	  this.score = 0;
-	  this.crashCount = 0;
-	  this.isSkierCaught = false;
-
-	  this.mousePos = [250, 250];
+	  this.reset();
 	};
 
 	Game.prototype.reset = function () {
 	  NUM_TREES = 5;
-	  this.trees = [];
+	  this.obstacles = [];
 
 	  this.skier = new Skier(this.skierSpriteMap);
 	  this.yeti = new Yeti(this.skierSpriteMap);
-	  this.addTrees();
+	  this.addObstacles();
 
 	  this.paused = false;
 	  this.score = 0;
@@ -143,53 +130,53 @@
 	  this.mousePos = [250, 250];
 	};
 
-	Game.prototype.addTrees = function (spriteMap) {
+	Game.prototype.addObstacles = function (spriteMap) {
 	  for (var i = 0; i < NUM_TREES; i++) {
-	    this.trees.push(
-	      new Tree(Util.randPos(), this.obstacleSpriteMap)
+	    this.obstacles.push(
+	      new Obstacle(Util.randPos(), this.obstacleSpriteMap)
 	    );
 	  }
 	};
 
 	Game.prototype.removeElapsed = function () {
-	  for (var i = 0; i < this.trees.length; i++) {
-	    if (this.trees[i].pos[1] < -50) {
-	      delete this.trees[i];
+	  for (var i = 0; i < this.obstacles.length; i++) {
+	    if (this.obstacles[i].pos[1] < -50) {
+	      delete this.obstacles[i];
 	    }
 	  }
 
-	  var newTrees = [];
-	  for (i = 0; i < this.trees.length; i++) {
-	    if (this.trees[i] !== undefined) {
-	      newTrees.push(this.trees[i]);
+	  var newObstacles = [];
+	  for (i = 0; i < this.obstacles.length; i++) {
+	    if (this.obstacles[i] !== undefined) {
+	      newObstacles.push(this.obstacles[i]);
 	    }
 	  }
 
-	  this.trees = newTrees;
+	  this.obstacles = newObstacles;
 	};
 
-	Game.prototype.rebalanceTrees = function () {
+	Game.prototype.rebalanceObstacles = function () {
 	  this.removeElapsed();
 
-	  for (var i = this.trees.length; i < NUM_TREES; i++) {
-	    this.trees.push(
-	      new Tree(Util.newTreePos(), this.obstacleSpriteMap)
+	  for (var i = this.obstacles.length; i < NUM_TREES; i++) {
+	    this.obstacles.push(
+	      new Obstacle(Util.newObstaclePos(), this.obstacleSpriteMap)
 	    );
 	  }
 	};
 
 	Game.prototype.checkCollision = function () {
-	  for (var i = 0; i < this.trees.length; i++) {
+	  for (var i = 0; i < this.obstacles.length; i++) {
 	    if (
 	        (
 	          Math.sqrt(
-	          Math.pow((this.trees[i].pos[0] - this.skier.pos[0]), 2) +
-	          Math.pow((this.trees[i].pos[1] - this.skier.pos[1]), 2)
+	          Math.pow((this.obstacles[i].pos[0] - this.skier.pos[0]), 2) +
+	          Math.pow((this.obstacles[i].pos[1] - this.skier.pos[1]), 2)
 	          ) < 20
 	        ) &&
-	        this.trees[i].colided === false
+	        this.obstacles[i].colided === false
 	      ) {
-	      this.colide(this.trees[i]);
+	      this.colide(this.obstacles[i]);
 	      return;
 	    } else {
 	      this.skier.ok();
@@ -279,8 +266,8 @@
 	Game.prototype.moveObjects = function () {
 	  this.skier.move(this.mousePos);
 	  this.yeti.move(this.skier.pos);
-	  this.trees.forEach(function (tree) {
-	    tree.move();
+	  this.obstacles.forEach(function (obstacle) {
+	    obstacle.move();
 	  });
 	};
 
@@ -291,7 +278,7 @@
 	  if (!this.paused) {
 	    this.moveObjects();
 	    this.tallyScore();
-	    this.rebalanceTrees();
+	    this.rebalanceObstacles();
 	    this.checkCollision();
 	    this.checkCaught();
 	  } else {
@@ -305,8 +292,8 @@
 	  ctx.fillStyle = "#FFFFFF";
 	  ctx.fillRect(0, 0, 500, 500);
 
-	  this.trees.forEach(function (tree) {
-	    tree.draw(ctx);
+	  this.obstacles.forEach(function (obstacle) {
+	    obstacle.draw(ctx);
 	  });
 	  this.skier.draw(ctx);
 	  this.yeti.draw(ctx);
@@ -430,7 +417,7 @@
 
 	var Util = __webpack_require__(1);
 
-	var Tree = function (pos, spriteMap) {
+	var Obstacle = function (pos, spriteMap) {
 	  this.spriteMap = spriteMap;
 	  this.type = Math.floor(Math.random() * 4);
 	  this.pos = pos;
@@ -440,7 +427,7 @@
 	  this.colided = false;
 	};
 
-	Tree.prototype.draw = function (ctx) {
+	Obstacle.prototype.draw = function (ctx) {
 	  switch (this.type) {
 	    case 0:
 	      ctx.drawImage(
@@ -473,12 +460,12 @@
 	  }
 	};
 
-	Tree.prototype.move = function () {
+	Obstacle.prototype.move = function () {
 	  this.pos[0] += this.vel[0];
 	  this.pos[1] += this.vel[1];
 	};
 
-	module.exports = Tree;
+	module.exports = Obstacle;
 
 
 /***/ },
